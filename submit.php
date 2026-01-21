@@ -2,6 +2,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+require('fpdf/fpdf.php');
+
 /* ========= DB CONNECTION ========= */
 $conn = new mysqli("localhost", "root", "", "job_application");
 if ($conn->connect_error) {
@@ -82,11 +84,6 @@ $sql = "INSERT INTO applications
 VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 $stmt = $conn->prepare($sql);
-
-if (!$stmt) {
-    die("Prepare failed: " . $conn->error);
-}
-
 $stmt->bind_param(
     "sssssss",
     $photoName,
@@ -97,13 +94,91 @@ $stmt->bind_param(
     $family,
     $emergency
 );
+$stmt->execute();
 
-if ($stmt->execute()) {
-    echo "<h2>✅ Application submitted successfully</h2>";
-} else {
-    echo "❌ Error: " . $stmt->error;
+/* ========= PDF GENERATION ========= */
+$pdf = new FPDF();
+$pdf->AddPage();
+
+/* Title */
+$pdf->SetFont('Arial', 'B', 16);
+$pdf->Cell(0, 10, 'Job Application Form', 0, 1, 'C');
+$pdf->Ln(5);
+
+/* Basic Info */
+$pdf->SetFont('Arial', '', 12);
+$pdf->Cell(0, 8, "Photo File: $photoName", 0, 1);
+$pdf->Cell(0, 8, "Resume File: $resumeName", 0, 1);
+$pdf->Ln(4);
+
+/* Education */
+$pdf->SetFont('Arial', 'B', 13);
+$pdf->Cell(0, 10, 'Education Details', 0, 1);
+$pdf->SetFont('Arial', '', 11);
+
+foreach (json_decode($education, true) as $edu) {
+    $pdf->MultiCell(0, 8,
+        "Degree: {$edu['degree']}\n".
+        "Institute: {$edu['institute']}\n".
+        "Year: {$edu['year']} | Grade: {$edu['grade']} | City: {$edu['city']}\n"
+    );
+    $pdf->Ln(2);
 }
+
+/* Employment */
+$pdf->SetFont('Arial', 'B', 13);
+$pdf->Cell(0, 10, 'Employment Details', 0, 1);
+$pdf->SetFont('Arial', '', 11);
+
+foreach (json_decode($employment, true) as $emp) {
+    $pdf->MultiCell(0, 8,
+        "Company: {$emp['company']}\n".
+        "Position: {$emp['position']}\n".
+        "Year: {$emp['year']}\n".
+        "Reason: {$emp['reason']}\n"
+    );
+}
+
+/* Skills */
+$pdf->SetFont('Arial', 'B', 13);
+$pdf->Cell(0, 10, 'Skills', 0, 1);
+$pdf->SetFont('Arial', '', 11);
+
+foreach (json_decode($skills, true) as $skill) {
+    $pdf->MultiCell(0, 8,
+        "Skill: {$skill['skill']} | Level: {$skill['level']} | Year: {$skill['year']}\n".
+        "Institute: {$skill['institute']}\n"
+    );
+}
+
+/* Family */
+$pdf->SetFont('Arial', 'B', 13);
+$pdf->Cell(0, 10, 'Family Details', 0, 1);
+$pdf->SetFont('Arial', '', 11);
+
+foreach (json_decode($family, true) as $fam) {
+    $pdf->MultiCell(0, 8,
+        "Name: {$fam['name']} | Relation: {$fam['relation']} | Occupation: {$fam['occupation']}\n"
+    );
+}
+
+/* Emergency */
+$pdf->SetFont('Arial', 'B', 13);
+$pdf->Cell(0, 10, 'Emergency Contact', 0, 1);
+$pdf->SetFont('Arial', '', 11);
+
+foreach (json_decode($emergency, true) as $em) {
+    $pdf->MultiCell(0, 8,
+        "Name: {$em['name']}\n".
+        "Relation: {$em['relation']} | Occupation: {$em['occupation']}\n".
+        "Qualification: {$em['qualification']} | City: {$em['city']}\n"
+    );
+}
+
+/* ========= FORCE DOWNLOAD ========= */
+$fileName = "Job_Application_" . time() . ".pdf";
+$pdf->Output('D', $fileName);
 
 $stmt->close();
 $conn->close();
-?>
+exit;
