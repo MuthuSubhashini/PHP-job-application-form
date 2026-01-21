@@ -6,8 +6,9 @@ RUN a2enmod rewrite
 # Copy project files
 COPY . /var/www/html/
 
-# Permissions for uploads
-RUN chown -R www-data:www-data /var/www/html/uploads
+# Create uploads folder + set permissions
+RUN mkdir -p /var/www/html/uploads \
+    && chown -R www-data:www-data /var/www/html/uploads
 
 # Expose port
 EXPOSE 80
