@@ -1,0 +1,278 @@
+
+/* ===============================
+   GLOBAL RESET
+================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+/* ===============================
+   PAGE BACKGROUND
+================================ */
+body {
+  background: #d6d6d6;
+  padding: 20px;
+}
+
+/* ===============================
+   A4 PAPER
+================================ */
+.a4 {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto 20px;
+  padding: 14mm;
+  background: #ffffff;
+  box-shadow: 0 0 18px rgba(0,0,0,0.25);
+  position: relative;
+}
+
+/* ===============================
+   HEADER
+================================ */
+.header-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 12px;
+}
+
+.logo-cell {
+  width: 60px;
+  vertical-align: top;
+}
+
+.logo-cell img {
+  width: 100px;
+}
+
+.company-cell {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.company-cell h1 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+.photo-cell {
+  width: 80px;
+  text-align: right;
+  vertical-align: top;
+}
+
+/* Photo frame */
+.photo-box {
+  width: 100px;
+  height: 125px;
+  border: 1.5px solid #c58b5f;
+  font-size: 11px;
+  text-align: center;
+
+  /* Center "Photo" text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Image handling */
+  background-color: #fff;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  position: relative;
+}
+
+/* Hide "Photo" text after upload */
+.photo-box.has-image {
+  color: transparent;
+}
+
+/* File input BELOW the frame */
+.photo-box input {
+  position: absolute;
+  bottom: -22px;        /* pushes input below box */
+  left: 0;
+  width: 100%;
+  font-size: 9px;
+}
+
+/* ===============================
+   TABLE DESIGN
+================================ */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+.table th,
+.table td {
+  border: 1.5px solid #c58b5f;
+  padding: 6px;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.table th {
+  background: #faf6f2;
+  text-align: center;
+  font-weight: 600;
+}
+
+.center td {
+  height: 28px;
+}
+
+/* ===============================
+   INPUTS
+================================ */
+input,
+textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 12px;
+}
+
+textarea {
+  resize: none;
+  height: 38px;
+}
+
+/* ===============================
+   SECTION TITLES
+================================ */
+h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 12px 0 6px;
+}
+
+/* ===============================
+   PDF STYLE RADIO ROW
+================================ */
+.radio-row {
+  display: flex;
+  gap: 28px;
+  margin-top: 6px;
+  align-items: center;
+}
+
+.radio-row label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* Square radio like PDF */
+.radio-row input[type="radio"] {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  border: 1.5px solid #c58b5f;
+  cursor: pointer;
+  position: relative;
+}
+
+.radio-row input[type="radio"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 7px;
+  height: 7px;
+  background: #c58b5f;
+}
+
+/* ===============================
+   FILE UPLOAD
+================================ */
+.resume-note {
+  font-size: 11px;
+  margin: 8px 0 4px;
+  width: 200px;
+  height: 50px;
+  border: 1.5px solid #c58b5f;
+  font-size: 11px;
+  text-align: center;
+  padding-top: 6px;
+}
+
+input[type="file"] {
+  font-size: 11px;
+}
+
+/* ===============================
+   FOOTER
+================================ */
+.footer {
+  font-size: 11px;
+  line-height: 1.5;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* ===============================
+   SUBMIT BUTTON
+================================ */
+.submit-wrapper {
+  text-align: center;
+  margin-top: 16px;
+}
+
+button {
+  padding: 8px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1.5px solid #c58b5f;
+  background: #faf6f2;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #f1e5da;
+}
+
+/* ===============================
+   PAGE BREAK
+================================ */
+.page-break {
+  page-break-before: always;
+}
+
+/* ===============================
+   PRINT
+================================ */
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  body {
+    background: none;
+    padding: 0;
+  }
+
+  .a4 {
+    margin: 0;
+    box-shadow: none;
+  }
+
+  button {
+    display: none;
+  }
+}
+
